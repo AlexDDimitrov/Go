@@ -1,5 +1,6 @@
 package main
 
+/*
 type ArrayInt struct {
 	data []int
 }
@@ -31,3 +32,4 @@ func (a *ArrayInt) Cap() int {
 func (a *ArrayInt) Push(value int) {
 	a.data = append(a.data, value)
 }
+*/
