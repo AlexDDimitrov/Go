@@ -40,6 +40,7 @@ func (a *Array[T]) Cap() int {
 	return cap(a.data)
 }
 
+//type parameter T any
 func (a *Array[T]) Push(value T) {
 	//a.data = append(a.data, value)
 
