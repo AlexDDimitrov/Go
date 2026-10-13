@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Array[T any] struct {
 	data []T
 }
@@ -121,11 +123,100 @@ func (s *Stack[T]) Cap() int {
 	return s.array.Cap()
 }
 
-type Queue[T any] struct {
+/*type Queue[T any] struct {
 	array *Array[T]
-}
+}*/
 
 //HW to implement Queue
+
+type Queue[T any] struct {
+	array *Array[T]
+	head  int // Index of the front element
+	tail  int // Index of the next insertion point (rear)
+	size  int // Current number of elements in the queue
+}
+
+func (q *Queue[T]) String() string {
+	return fmt.Sprintf("Queue{array: %v, head: %d, tail: %d, size: %d}", q.array.data, q.head, q.tail, q.size)
+}
+
+// NewQueue initializes a circular queue with a fixed capacity
+func NewQueue[T any](capacity int) *Queue[T] {
+	if capacity <= 0 {
+		capacity = 8 // Default fallback capacity
+	}
+	arr := NewArrayWithCapacity[T](capacity)
+	// Resize data length to match capacity so we can use direct index assignment
+	arr.data = make([]T, capacity)
+
+	return &Queue[T]{
+		array: arr,
+		head:  0,
+		tail:  0,
+		size:  0,
+	}
+}
+
+func (q *Queue[T]) IsEmpty() bool {
+	return q.size == 0
+}
+
+func (q *Queue[T]) IsFull() bool {
+	return q.size == q.array.Cap()
+}
+
+func (q *Queue[T]) Len() int {
+	return q.size
+}
+
+// Enqueue adds an element to the rear of the queue
+func (q *Queue[T]) Enqueue(value T) bool {
+	if q.IsFull() {
+		newCap := 2 * q.array.Cap()
+		if newCap == 0 {
+			newCap = 8 // Default fallback capacity
+		}
+
+		// Create a brand new slice with the expanded capacity
+		newData := make([]T, newCap)
+
+		// Unroll the circular elements into the new slice in straight sequential order
+		for i := 0; i < q.size; i++ {
+			// Find old index using modulo
+			oldIndex := (q.head + i) % q.array.Cap()
+			newData[i] = q.array.data[oldIndex]
+		}
+
+		// Reset your tracking pointers
+		q.array.data = newData
+		q.head = 0
+		q.tail = q.size // The next insert position is right after the old elements
+	}
+
+	q.array.data[q.tail] = value
+	// Move tail forward circularly: tail = (tail + 1) % capacity
+	q.tail = (q.tail + 1) % q.array.Cap()
+	q.size++
+	return true
+}
+
+// Dequeue removes and returns an element from the front of the queue
+func (q *Queue[T]) Dequeue() (T, bool) {
+	if q.IsEmpty() {
+		var zero T
+		return zero, false // Queue underflow
+	}
+
+	value := q.array.data[q.head]
+	// Clear slot reference for garbage collection (especially useful for pointers)
+	var zero T
+	q.array.data[q.head] = zero
+
+	// Move head forward circularly: head = (head + 1) % capacity
+	q.head = (q.head + 1) % q.array.Cap()
+	q.size--
+	return value, true
+}
 
 func main() {
 	//arr := NewArray[int]()
@@ -146,4 +237,28 @@ func main() {
 	if ok {
 		println(x, ok, newStack.Len(), newStack.Cap()) // 30, true, 2, 32
 	}
+
+	fmt.Println("Testing queue")
+	newQueue := NewQueue[int](4)
+	newQueue.Enqueue(10)
+	newQueue.Enqueue(20)
+	newQueue.Enqueue(30)
+	fmt.Println(newQueue) // Queue{array: [10 20 30 0], head: 0, tail: 3, size: 3}
+	y, ok := newQueue.Dequeue()
+	fmt.Println(newQueue)                                                // Queue{array: [0 20 30 0], head: 1, tail: 3, size: 2}
+	fmt.Println("Starting element:", newQueue.array.data[newQueue.head]) // 20
+	if ok {
+		fmt.Println(y, ok, newQueue.Len(), newQueue.IsFull()) // 10, true, 2, false
+	}
+	newQueue.Enqueue(40)
+	fmt.Println(newQueue) // Queue{array: [0 20 30 40], head: 1, tail: 0, size: 3}
+	newQueue.Enqueue(50)
+	fmt.Println(newQueue) // Queue{array: [50 20 30 40], head: 1, tail: 1, size: 4}
+	newQueue.Dequeue()
+	fmt.Println(newQueue) // Queue{array: [50 0 30 40], head: 2, tail: 1, size: 3}
+	newQueue.Enqueue(60)
+	fmt.Println(newQueue) // Queue{array: [30 40 50 60], head: 2, tail: 2, size: 4}
+	newQueue.Enqueue(70)  // This should trigger a resize
+	fmt.Println(newQueue) // Queue{array: [30 40 50 60 70 0 0 0], head: 0, tail: 5, size: 5}
+
 }
