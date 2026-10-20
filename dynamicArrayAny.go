@@ -159,11 +159,11 @@ func NewQueue[T any](capacity int) *Queue[T] {
 }
 
 func (q *Queue[T]) IsEmpty() bool {
-	return q.size == 0
+	return q.size == 0 //if we dont have size field: q.first == q.last && !q.IsFull
 }
 
 func (q *Queue[T]) IsFull() bool {
-	return q.size == q.array.Cap()
+	return q.size == q.array.Cap() //if we dont have size field: (q.head+q.last)%cap(q.data) == 0
 }
 
 func (q *Queue[T]) Len() int {
@@ -187,6 +187,8 @@ func (q *Queue[T]) Enqueue(value T) bool {
 			oldIndex := (q.head + i) % q.array.Cap()
 			newData[i] = q.array.data[oldIndex]
 		}
+		//copy(tmp, q.data[q.first:cap(q.data)])
+		//copy(tmp[q.first+1:], q.data[0:q.first+1])
 
 		// Reset your tracking pointers
 		q.array.data = newData
@@ -199,7 +201,7 @@ func (q *Queue[T]) Enqueue(value T) bool {
 	q.tail = (q.tail + 1) % q.array.Cap()
 	q.size++
 	return true
-}
+}  
 
 // Dequeue removes and returns an element from the front of the queue
 func (q *Queue[T]) Dequeue() (T, bool) {
