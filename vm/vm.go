@@ -102,3 +102,4 @@ func main() {
 }
 
 //see teachers git for the code
+//hw model variables, add handle in Eval, finish memory and define in Exp - variable uint
