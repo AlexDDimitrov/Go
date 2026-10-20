@@ -201,7 +201,7 @@ func (q *Queue[T]) Enqueue(value T) bool {
 	q.tail = (q.tail + 1) % q.array.Cap()
 	q.size++
 	return true
-}  
+}
 
 // Dequeue removes and returns an element from the front of the queue
 func (q *Queue[T]) Dequeue() (T, bool) {
@@ -221,7 +221,7 @@ func (q *Queue[T]) Dequeue() (T, bool) {
 	return value, true
 }
 
-func main() {
+func notmain() {
 	//arr := NewArray[int]()
 	//arr.Push(1)
 	//arr.Push(2)
