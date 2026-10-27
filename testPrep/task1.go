@@ -3,8 +3,15 @@
 // масивите от поредни числа [2],  [1, 2],  [4, 5, 6] [2, 3],  [5]
 // -> [0:0] [1,2] [3,5] [6,7] [8]
 
-//go mod init exec
+// go mod init exec
+// go.mod:
+// module github.com/NoHomey/algorithms-and-data-structures-2026/dsa
+//
+// go 1.26.4
 
+// terminal:
+// go get github.com/NoHomey/algorithms-and-data-structures-2026/dsa
+// -> to access remote libs
 package main
 
 import (
