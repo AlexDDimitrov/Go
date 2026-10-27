@@ -12,11 +12,14 @@
 // terminal:
 // go get github.com/NoHomey/algorithms-and-data-structures-2026/dsa
 // -> to access remote libs
+
+// and we import: Queue "github.com/NoHomey/algorithms-and-data-structures-2026/dsa/ringbuffer"
 package main
 
 import (
-	"exec/Queue"
 	"fmt"
+
+	Queue "github.com/NoHomey/algorithms-and-data-structures-2026/dsa/ringbuffer"
 )
 
 type Range struct {
