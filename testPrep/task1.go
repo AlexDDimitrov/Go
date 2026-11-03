@@ -53,7 +53,7 @@ func solve(arr []int) []Range {
 	return res
 }
 
-func main() {
+func Nonmain() {
 	arr := []int{2, 1, 2, 4, 5, 6, 2, 3, 5}
 	res := solve(arr)
 	fmt.Println(arr)
