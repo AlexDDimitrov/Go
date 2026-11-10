@@ -22,4 +22,6 @@ type List[Elem any] struct {
 
 }
 
+//reverse method and check is circular methods to implement.
+
 //Get it from repo.  
