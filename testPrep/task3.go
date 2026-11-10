@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-func main() {
+func NOTmain() {
 	data := [...]int{2, 3, 1, 5, 6, 4}
 
 	var result [6]int
