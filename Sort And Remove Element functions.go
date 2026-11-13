@@ -51,3 +51,16 @@ func Sort2DFE(intervals [][]int) {
 		}
 	}
 }
+
+func SortBoth(capital []int, profits []int) {
+	n := len(capital)
+	for i := 0; i < n-1; i++ {
+		for j := 0; j < n-i-1; j++ {
+			if capital[j] > capital[j+1] {
+				// Swap capital AND profits to keep them matched!
+				capital[j], capital[j+1] = capital[j+1], capital[j]
+				profits[j], profits[j+1] = profits[j+1], profits[j]
+			}
+		}
+	}
+}

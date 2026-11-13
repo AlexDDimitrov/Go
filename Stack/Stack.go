@@ -1,39 +1,44 @@
-package Stack
+package stack
 
-import Array "github.com/NoHomey/algorithms-and-data-structures-2026/dsa/Array"
+import array "github.com/NoHomey/algorithms-and-data-structures-2026/dsa/array"
 
 type Stack[T any] struct {
-	Array *Array.Array[T]
+	array *array.Array[T]
 }
 
 func NewStack[T any]() *Stack[T] {
-	return &Stack[T]{Array: Array.NewArray[T]()}
+	return &Stack[T]{array: array.NewArray[T]()}
 }
 
 func (s Stack[T]) IsEmpty() bool {
-	return s.Array.IsEmpty()
+	return s.array.IsEmpty()
 }
 
 func (s Stack[T]) IsFull() bool {
-	return s.Array.IsFull()
+	return s.array.IsFull()
 }
 
 func (s Stack[T]) Push(x T) {
-	s.Array.Push(x)
+	s.array.Push(x)
 }
 
 func (s Stack[T]) Pop() (T, bool) {
-	return s.Array.Pop()
+	return s.array.Pop()
 }
 
-func (s Stack[T]) Top() T {
-	return s.Array.Last()
+func (s Stack[T]) Top() (T, bool) {
+	if s.IsEmpty() {
+		var t T
+		return t, false
+	}
+	last := s.array.Last()
+	return last, true
 }
 
 func (s Stack[T]) Len() int {
-	return s.Array.Len()
+	return s.array.Len()
 }
 
 func (s Stack[T]) Cap() int {
-	return s.Array.Cap()
+	return s.array.Cap()
 }
